@@ -44,7 +44,7 @@ function App() {
 
   return (
     <div className="App">
-      <Header onMenuClick={() => setShowSidebar(!showSidebar)} onAdminClick={() => setShowAdmin(true)} />
+      <Header onMenuClick={() => setShowSidebar(!showSidebar)} />
       
       {!isOnline && (
         <div className="offline-banner">

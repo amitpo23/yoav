@@ -12,7 +12,7 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "https://hotel-ai-backend.vercel.app/api/:path*"
+      "destination": "https://yoav-wje8.onrender.com/api/:path*"
     },
     {
       "source": "/(.*)",

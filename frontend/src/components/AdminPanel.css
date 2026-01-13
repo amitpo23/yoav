@@ -492,3 +492,364 @@
     align-items: stretch;
   }
 }
+
+/* ===================== */
+/* Logs View Styles      */
+/* ===================== */
+
+.logs-view {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.realtime-stats {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.realtime-stat {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex: 1;
+  min-width: 180px;
+}
+
+.realtime-stat .stat-icon {
+  font-size: 1.5rem;
+}
+
+.realtime-stat .stat-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.realtime-stat .stat-label {
+  font-size: 0.75rem;
+  opacity: 0.9;
+}
+
+.logs-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.logs-list {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.logs-list h3 {
+  padding: 1rem;
+  margin: 0;
+  background: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.logs-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.logs-table th,
+.logs-table td {
+  padding: 0.75rem;
+  text-align: right;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.logs-table th {
+  background: #f9fafb;
+  font-weight: 600;
+  color: #374151;
+}
+
+.logs-table tbody tr {
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.logs-table tbody tr:hover {
+  background: #f3f4f6;
+}
+
+.session-id {
+  font-family: monospace;
+  color: #667eea;
+}
+
+.message-preview {
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Session Detail View */
+.session-detail {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.session-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.session-header h3 {
+  margin: 0;
+}
+
+.back-btn {
+  background: #e5e7eb;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.back-btn:hover {
+  background: #d1d5db;
+}
+
+.session-messages {
+  padding: 1rem;
+  max-height: 400px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.log-message {
+  padding: 1rem;
+  border-radius: 12px;
+}
+
+.log-message.user {
+  background: #e5e7eb;
+}
+
+.log-message.assistant {
+  background: linear-gradient(135deg, #667eea22 0%, #764ba222 100%);
+}
+
+.message-header {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.message-header .role {
+  font-weight: 600;
+}
+
+.message-header .response-time {
+  background: #10b981;
+  color: white;
+  padding: 0.125rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.625rem;
+}
+
+.message-content {
+  line-height: 1.5;
+  word-break: break-word;
+}
+
+.skills-used {
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid #e5e7eb;
+  font-size: 0.75rem;
+  color: #667eea;
+}
+
+/* ===================== */
+/* Reports View Styles   */
+/* ===================== */
+
+.reports-view {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.report-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.report-header h3 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.report-header .period {
+  background: #f3f4f6;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+.report-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+}
+
+.summary-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 1.5rem;
+  border-radius: 16px;
+  text-align: center;
+}
+
+.summary-card .summary-icon {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.summary-card .summary-value {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.summary-card .summary-label {
+  font-size: 0.875rem;
+  opacity: 0.9;
+  margin-top: 0.25rem;
+}
+
+.report-section {
+  background: white;
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.report-section h4 {
+  margin: 0 0 1rem 0;
+  color: #374151;
+}
+
+.daily-chart {
+  display: flex;
+  gap: 0.5rem;
+  height: 150px;
+  align-items: flex-end;
+  padding: 1rem 0;
+}
+
+.day-bar {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.day-bar .bar {
+  width: 100%;
+  max-width: 60px;
+  background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+  border-radius: 8px 8px 0 0;
+  min-height: 10px;
+  display: flex;
+  justify-content: center;
+  padding-top: 0.5rem;
+}
+
+.day-bar .bar-value {
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.day-bar .day-label {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.topics-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.topic-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background: #f9fafb;
+  border-radius: 8px;
+}
+
+.topic-item .topic-name {
+  font-weight: 500;
+}
+
+.topic-item .topic-count {
+  background: #667eea;
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 3rem;
+  color: #6b7280;
+}
+
+.empty-state p:first-child {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Responsive for logs and reports */
+@media (max-width: 768px) {
+  .realtime-stats {
+    flex-direction: column;
+  }
+
+  .report-summary {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .daily-chart {
+    overflow-x: auto;
+  }
+
+  .logs-table {
+    font-size: 0.75rem;
+  }
+
+  .logs-table th,
+  .logs-table td {
+    padding: 0.5rem;
+  }
+}

@@ -37,12 +37,52 @@ interface MemoryStats {
   total_access_count: number;
 }
 
+interface ConversationLog {
+  session_id: string;
+  timestamp: string;
+  role: string;
+  message: string;
+  response_time_ms?: number;
+  skills_used?: string[];
+}
+
+interface DailyReport {
+  date: string;
+  total_conversations: number;
+  total_messages: number;
+  avg_response_time_ms: number;
+  top_topics: { topic: string; count: number }[];
+  skills_usage: { [key: string]: number };
+}
+
+interface WeeklyReport {
+  period: string;
+  total_messages: number;
+  total_sessions: number;
+  daily_breakdown: { date: string; messages: number; sessions: number }[];
+  top_topics: { topic: string; count: number }[];
+  avg_response_time: number;
+}
+
+interface RealtimeStats {
+  messages_last_hour: number;
+  active_sessions_today: number;
+  messages_today: number;
+  current_hour: number;
+  last_message_time: string | null;
+}
+
 const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
   const [stats, setStats] = useState<Stats | null>(null);
   const [skills, setSkills] = useState<Skill[]>([]);
   const [scrapedUrls, setScrapedUrls] = useState<ScrapedUrl[]>([]);
   const [memoryStats, setMemoryStats] = useState<MemoryStats | null>(null);
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'skills' | 'knowledge' | 'memory'>('dashboard');
+  const [logs, setLogs] = useState<ConversationLog[]>([]);
+  const [realtimeStats, setRealtimeStats] = useState<RealtimeStats | null>(null);
+  const [weeklyReport, setWeeklyReport] = useState<WeeklyReport | null>(null);
+  const [selectedSession, setSelectedSession] = useState<string | null>(null);
+  const [sessionMessages, setSessionMessages] = useState<ConversationLog[]>([]);
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'skills' | 'knowledge' | 'memory' | 'logs' | 'reports'>('dashboard');
   const [loading, setLoading] = useState(false);
   
   // URL Scraping form
@@ -75,11 +115,48 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
       } else if (activeTab === 'memory') {
         const response = await apiService.get('/api/memory/stats');
         setMemoryStats(response.data);
+      } else if (activeTab === 'logs') {
+        const [logsRes, realtimeRes] = await Promise.all([
+          apiService.get('/api/logs?limit=50'),
+          apiService.get('/api/logs/realtime')
+        ]);
+        setLogs(logsRes.data.logs || []);
+        setRealtimeStats(realtimeRes.data);
+      } else if (activeTab === 'reports') {
+        const response = await apiService.get('/api/reports/weekly');
+        setWeeklyReport(response.data);
       }
     } catch (error) {
       console.error('Error loading data:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const loadSessionMessages = async (sessionId: string) => {
+    try {
+      const response = await apiService.get(`/api/logs/session/${sessionId}`);
+      setSessionMessages(response.data.messages || []);
+      setSelectedSession(sessionId);
+    } catch (error) {
+      console.error('Error loading session:', error);
+    }
+  };
+
+  const exportLogs = async (format: 'json' | 'csv') => {
+    try {
+      const response = await apiService.get(`/api/logs/export?format=${format}`);
+      const blob = new Blob([response.data], { 
+        type: format === 'csv' ? 'text/csv' : 'application/json' 
+      });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `conversation_logs.${format}`;
+      a.click();
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      alert('שגיאה בייצוא לוגים');
     }
   };
 
@@ -189,6 +266,18 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
             onClick={() => setActiveTab('memory')}
           >
             🧠 זיכרון
+          </button>
+          <button
+            className={activeTab === 'logs' ? 'active' : ''}
+            onClick={() => setActiveTab('logs')}
+          >
+            📜 לוגים
+          </button>
+          <button
+            className={activeTab === 'reports' ? 'active' : ''}
+            onClick={() => setActiveTab('reports')}
+          >
+            📈 דוחות
           </button>
         </div>
 
@@ -426,6 +515,171 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
                   💾 שמור בזיכרון
                 </button>
               </div>
+            </div>
+          )}
+
+          {activeTab === 'logs' && (
+            <div className="logs-view">
+              {realtimeStats && (
+                <div className="realtime-stats">
+                  <div className="realtime-stat">
+                    <span className="stat-icon">⏰</span>
+                    <span className="stat-value">{realtimeStats.messages_last_hour}</span>
+                    <span className="stat-label">הודעות בשעה האחרונה</span>
+                  </div>
+                  <div className="realtime-stat">
+                    <span className="stat-icon">👥</span>
+                    <span className="stat-value">{realtimeStats.active_sessions_today}</span>
+                    <span className="stat-label">סשנים היום</span>
+                  </div>
+                  <div className="realtime-stat">
+                    <span className="stat-icon">💬</span>
+                    <span className="stat-value">{realtimeStats.messages_today}</span>
+                    <span className="stat-label">הודעות היום</span>
+                  </div>
+                </div>
+              )}
+
+              <div className="logs-actions">
+                <button className="action-btn" onClick={() => exportLogs('json')}>
+                  📥 ייצא JSON
+                </button>
+                <button className="action-btn" onClick={() => exportLogs('csv')}>
+                  📥 ייצא CSV
+                </button>
+                <button className="action-btn" onClick={loadData}>
+                  🔄 רענן
+                </button>
+              </div>
+
+              {selectedSession ? (
+                <div className="session-detail">
+                  <div className="session-header">
+                    <h3>📝 שיחה: {selectedSession.substring(0, 8)}...</h3>
+                    <button className="back-btn" onClick={() => setSelectedSession(null)}>
+                      ← חזור
+                    </button>
+                  </div>
+                  <div className="session-messages">
+                    {sessionMessages.map((msg, index) => (
+                      <div key={index} className={`log-message ${msg.role}`}>
+                        <div className="message-header">
+                          <span className="role">{msg.role === 'user' ? '👤 משתמש' : '🤖 בוט'}</span>
+                          <span className="time">
+                            {new Date(msg.timestamp).toLocaleTimeString('he-IL')}
+                          </span>
+                          {msg.response_time_ms && (
+                            <span className="response-time">{msg.response_time_ms}ms</span>
+                          )}
+                        </div>
+                        <div className="message-content">{msg.message}</div>
+                        {msg.skills_used && msg.skills_used.length > 0 && (
+                          <div className="skills-used">
+                            ⚡ {msg.skills_used.join(', ')}
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <div className="logs-list">
+                  <h3>📜 לוגים אחרונים ({logs.length})</h3>
+                  <table className="logs-table">
+                    <thead>
+                      <tr>
+                        <th>זמן</th>
+                        <th>סשן</th>
+                        <th>תפקיד</th>
+                        <th>הודעה</th>
+                        <th>זמן תגובה</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {logs.map((log, index) => (
+                        <tr key={index} onClick={() => loadSessionMessages(log.session_id)}>
+                          <td>{new Date(log.timestamp).toLocaleTimeString('he-IL')}</td>
+                          <td className="session-id">{log.session_id.substring(0, 8)}...</td>
+                          <td>{log.role === 'user' ? '👤' : '🤖'}</td>
+                          <td className="message-preview">{log.message.substring(0, 50)}...</td>
+                          <td>{log.response_time_ms ? `${log.response_time_ms}ms` : '-'}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
+          )}
+
+          {activeTab === 'reports' && (
+            <div className="reports-view">
+              {weeklyReport && (
+                <>
+                  <div className="report-header">
+                    <h3>📊 דוח שבועי</h3>
+                    <span className="period">{weeklyReport.period}</span>
+                  </div>
+
+                  <div className="report-summary">
+                    <div className="summary-card">
+                      <div className="summary-icon">💬</div>
+                      <div className="summary-value">{weeklyReport.total_messages}</div>
+                      <div className="summary-label">סה"כ הודעות</div>
+                    </div>
+                    <div className="summary-card">
+                      <div className="summary-icon">👥</div>
+                      <div className="summary-value">{weeklyReport.total_sessions}</div>
+                      <div className="summary-label">סה"כ סשנים</div>
+                    </div>
+                    <div className="summary-card">
+                      <div className="summary-icon">⏱️</div>
+                      <div className="summary-value">{Math.round(weeklyReport.avg_response_time)}ms</div>
+                      <div className="summary-label">זמן תגובה ממוצע</div>
+                    </div>
+                  </div>
+
+                  <div className="report-section">
+                    <h4>📅 פירוט יומי</h4>
+                    <div className="daily-chart">
+                      {weeklyReport.daily_breakdown.map((day, index) => (
+                        <div key={index} className="day-bar">
+                          <div 
+                            className="bar" 
+                            style={{ 
+                              height: `${Math.min(100, (day.messages / Math.max(...weeklyReport.daily_breakdown.map(d => d.messages || 1))) * 100)}%` 
+                            }}
+                          >
+                            <span className="bar-value">{day.messages}</span>
+                          </div>
+                          <span className="day-label">
+                            {new Date(day.date).toLocaleDateString('he-IL', { weekday: 'short' })}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="report-section">
+                    <h4>🏷️ נושאים פופולריים</h4>
+                    <div className="topics-list">
+                      {weeklyReport.top_topics.slice(0, 5).map((topic, index) => (
+                        <div key={index} className="topic-item">
+                          <span className="topic-name">{topic.topic}</span>
+                          <span className="topic-count">{topic.count}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </>
+              )}
+
+              {!weeklyReport && !loading && (
+                <div className="empty-state">
+                  <p>📊 אין עדיין מספיק נתונים לדוח שבועי</p>
+                  <p>התחל שיחות עם הסוכן כדי לצבור סטטיסטיקות</p>
+                </div>
+              )}
             </div>
           )}
         </div>

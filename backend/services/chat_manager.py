@@ -1,10 +1,12 @@
 from typing import Dict, List, Optional
 import uuid
+import time
 from datetime import datetime
 from services.llm_service import LLMService
 from services.knowledge_base import KnowledgeBaseService
 from services.skills_system import SkillsManager
 from services.agent_memory import MemoryManager
+from services.logs_service import logs_service
 
 
 class ChatManager:
@@ -56,6 +58,9 @@ class ChatManager:
         # קבלת או יצירת סשן
         session_id = self._get_or_create_session(session_id)
         
+        # Start timing for response
+        start_time = time.time()
+        
         # קבלת Memory לסשן
         memory = self.memory_manager.get_or_create_memory(session_id)
         
@@ -65,6 +70,13 @@ class ChatManager:
             "content": message,
             "timestamp": datetime.now().isoformat()
         })
+        
+        # Log user message
+        await logs_service.log_message(
+            session_id=session_id,
+            role="user",
+            message=message
+        )
         
         # Process with Skills System
         skills_results = await self.skills_manager.process_query(message)
@@ -102,6 +114,19 @@ class ChatManager:
             "content": response_content,
             "timestamp": datetime.now().isoformat()
         })
+        
+        # Calculate response time
+        response_time_ms = int((time.time() - start_time) * 1000)
+        
+        # Log assistant response with timing
+        await logs_service.log_message(
+            session_id=session_id,
+            role="assistant",
+            message=response_content,
+            response_time_ms=response_time_ms,
+            skills_used=skills_results['skills_triggered'],
+            knowledge_sources=[s['metadata'].get('title', '') for s in sources] if sources else None
+        )
         
         # Store interaction in memory
         memory.add_interaction(

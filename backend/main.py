@@ -10,6 +10,7 @@ from services.knowledge_base import KnowledgeBaseService
 from services.chat_manager import ChatManager
 from services.memory_service import memory_service
 from services.url_scraper import URLKnowledgeScraper
+from services.logs_service import logs_service
 from routes import admin
 
 app = FastAPI(title="Hotel Management AI Support System")
@@ -446,6 +447,97 @@ async def get_memory_stats():
     קבלת סטטיסטיקות זיכרון
     """
     return await memory_service.get_memory_stats()
+
+
+# ===========================================
+# Conversation Logs & Reports Endpoints
+# ===========================================
+
+class LogQueryRequest(BaseModel):
+    session_id: Optional[str] = None
+    start_date: Optional[str] = None
+    end_date: Optional[str] = None
+    limit: Optional[int] = 100
+    offset: Optional[int] = 0
+
+
+@app.get("/api/logs")
+async def get_conversation_logs(
+    session_id: str = None,
+    start_date: str = None,
+    end_date: str = None,
+    limit: int = 100,
+    offset: int = 0
+):
+    """
+    קבלת לוגים של שיחות
+    """
+    return await logs_service.get_logs(
+        session_id=session_id,
+        start_date=start_date,
+        end_date=end_date,
+        limit=limit,
+        offset=offset
+    )
+
+
+@app.get("/api/logs/session/{session_id}")
+async def get_session_logs(session_id: str):
+    """
+    קבלת שיחה מלאה לפי session
+    """
+    messages = await logs_service.get_session_conversation(session_id)
+    return {"session_id": session_id, "messages": messages}
+
+
+@app.get("/api/logs/realtime")
+async def get_realtime_stats():
+    """
+    קבלת סטטיסטיקות בזמן אמת
+    """
+    return await logs_service.get_real_time_stats()
+
+
+@app.get("/api/reports/daily/{date}")
+async def get_daily_report(date: str):
+    """
+    קבלת דוח יומי
+    """
+    report = await logs_service.generate_daily_report(date)
+    if report:
+        from dataclasses import asdict
+        return asdict(report)
+    raise HTTPException(status_code=404, detail="אין נתונים לתאריך זה")
+
+
+@app.get("/api/reports/weekly")
+async def get_weekly_report():
+    """
+    קבלת דוח שבועי
+    """
+    return await logs_service.generate_weekly_report()
+
+
+@app.get("/api/logs/export")
+async def export_logs(format: str = "json"):
+    """
+    ייצוא לוגים
+    """
+    from fastapi.responses import Response
+    
+    content = await logs_service.export_logs(format)
+    
+    if format == "csv":
+        return Response(
+            content=content,
+            media_type="text/csv",
+            headers={"Content-Disposition": "attachment; filename=conversation_logs.csv"}
+        )
+    return Response(
+        content=content,
+        media_type="application/json",
+        headers={"Content-Disposition": "attachment; filename=conversation_logs.json"}
+    )
 
 
 # ===========================================

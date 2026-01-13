@@ -3,7 +3,7 @@
   "buildCommand": "SKIP_PREFLIGHT_CHECK=true CI=false npm run build",
   "outputDirectory": "build",
   "devCommand": "npm start",
-  "installCommand": "npm install --legacy-peer-deps --force",
+  "installCommand": "rm -rf node_modules package-lock.json && npm install --legacy-peer-deps --force",
   "framework": "create-react-app",
   "rewrites": [
     {

@@ -8,6 +8,8 @@ from datetime import datetime
 from services.llm_service import LLMService
 from services.knowledge_base import KnowledgeBaseService
 from services.chat_manager import ChatManager
+from services.memory_service import memory_service
+from services.url_scraper import URLKnowledgeScraper
 from routes import admin
 
 app = FastAPI(title="Hotel Management AI Support System")
@@ -25,6 +27,7 @@ app.add_middleware(
 llm_service = LLMService()
 kb_service = KnowledgeBaseService()
 chat_manager = ChatManager(llm_service, kb_service)
+url_scraper = URLKnowledgeScraper(kb_service)
 
 # Include admin routes
 app.include_router(admin.router)
@@ -301,6 +304,148 @@ async def get_websocket_stats():
     קבלת סטטיסטיקות WebSocket
     """
     return connection_manager.get_connection_stats()
+
+
+# ===========================================
+# Memory & URL Scraping Endpoints
+# ===========================================
+
+class UrlScrapeRequest(BaseModel):
+    url: str
+    category: Optional[str] = "scraped"
+    crawl: Optional[bool] = False
+    max_pages: Optional[int] = 10
+
+
+class MemoryRequest(BaseModel):
+    content: str
+    memory_type: Optional[str] = "fact"
+    importance: Optional[float] = 0.5
+    expires_in_days: Optional[int] = None
+
+
+@app.post("/api/knowledge/scrape-url")
+async def scrape_url(request: UrlScrapeRequest):
+    """
+    גריפת URL והוספה למאגר הידע
+    """
+    try:
+        if request.crawl:
+            pages = await url_scraper.crawl_website(
+                request.url,
+                max_pages=request.max_pages,
+                category=request.category
+            )
+            return {
+                "success": True,
+                "message": f"נסרקו {len(pages)} דפים",
+                "pages": [{"url": p.url, "title": p.title, "words": p.word_count} for p in pages]
+            }
+        else:
+            page = await url_scraper.scrape_url(request.url, category=request.category)
+            if page:
+                return {
+                    "success": True,
+                    "message": "הדף נסרק בהצלחה",
+                    "page": {
+                        "url": page.url,
+                        "title": page.title,
+                        "word_count": page.word_count,
+                        "language": page.language
+                    }
+                }
+            else:
+                raise HTTPException(status_code=400, detail="לא ניתן לסרוק את הדף")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/knowledge/scraped-urls")
+async def get_scraped_urls():
+    """
+    קבלת רשימת URLs שנסרקו
+    """
+    return {
+        "urls": url_scraper.get_scraped_urls(),
+        "stats": url_scraper.get_stats()
+    }
+
+
+@app.delete("/api/knowledge/scraped-url/{url:path}")
+async def delete_scraped_url(url: str):
+    """
+    מחיקת URL מהזיכרון
+    """
+    if url_scraper.delete_url(url):
+        return {"success": True, "message": "URL נמחק"}
+    raise HTTPException(status_code=404, detail="URL לא נמצא")
+
+
+@app.post("/api/knowledge/refresh-urls")
+async def refresh_all_urls():
+    """
+    רענון כל ה-URLs
+    """
+    results = await url_scraper.refresh_all()
+    return {
+        "success": True,
+        "results": results
+    }
+
+
+@app.post("/api/memory/remember")
+async def add_memory(request: MemoryRequest):
+    """
+    שמירת מידע בזיכרון ארוך טווח
+    """
+    memory_id = await memory_service.remember(
+        content=request.content,
+        memory_type=request.memory_type,
+        importance=request.importance,
+        expires_in_days=request.expires_in_days
+    )
+    return {
+        "success": True,
+        "memory_id": memory_id
+    }
+
+
+@app.get("/api/memory/recall")
+async def recall_memory(query: str, limit: int = 5):
+    """
+    חיפוש בזיכרון
+    """
+    memories = await memory_service.recall(query, limit=limit)
+    return {
+        "memories": [
+            {
+                "id": m.id,
+                "content": m.content,
+                "type": m.memory_type,
+                "importance": m.importance,
+                "access_count": m.access_count
+            }
+            for m in memories
+        ]
+    }
+
+
+@app.delete("/api/memory/{memory_id}")
+async def forget_memory(memory_id: str):
+    """
+    מחיקת זיכרון
+    """
+    if await memory_service.forget(memory_id):
+        return {"success": True}
+    raise HTTPException(status_code=404, detail="זיכרון לא נמצא")
+
+
+@app.get("/api/memory/stats")
+async def get_memory_stats():
+    """
+    קבלת סטטיסטיקות זיכרון
+    """
+    return await memory_service.get_memory_stats()
 
 
 # ===========================================

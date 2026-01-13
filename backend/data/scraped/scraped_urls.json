@@ -1,215 +1,292 @@
 {
-  "urls": [
-    {
-      "url": "https://help.noovy.com/knowledge",
-      "title": "Knowledge Center",
-      "word_count": 122,
-      "language": "en",
-      "scraped_at": "2026-01-13T15:37:55.222596"
-    },
-    {
-      "url": "https://help.noovy.com/knowledge/getting-started?hsLang=en",
-      "title": "Knowledge Center",
-      "word_count": 192,
-      "language": "en",
-      "scraped_at": "2026-01-13T15:37:56.592023"
-    },
-    {
-      "url": "https://help.noovy.com/knowledge/bookings-rooms?hsLang=en",
-      "title": "Knowledge Center",
-      "word_count": 405,
-      "language": "en",
-      "scraped_at": "2026-01-13T15:37:57.910481"
-    },
-    {
-      "url": "https://help.noovy.com/_hcms/mem/login?redirect_url=https%3A%2F%2Fhelp.noovy.com%2Fknowledge&amp;hsLang=en",
-      "title": "Noovy",
-      "word_count": 45,
-      "language": "en",
-      "scraped_at": "2026-01-13T15:37:59.092231"
-    },
-    {
-      "url": "https://help.noovy.com/knowledge/rates-distribution?hsLang=en",
-      "title": "Knowledge Center",
-      "word_count": 207,
-      "language": "en",
-      "scraped_at": "2026-01-13T15:38:00.345058"
-    },
-    {
-      "url": "https://help.noovy.com/_hcms/mem/login?redirect_url=https%3A%2F%2Fhelp.noovy.com%2Fknowledge",
-      "title": "Noovy",
-      "word_count": 45,
-      "language": "en",
-      "scraped_at": "2026-01-13T15:38:01.575674"
-    },
-    {
-      "url": "https://help.noovy.com/knowledge/hardware?hsLang=en",
-      "title": "Knowledge Center",
-      "word_count": 125,
-      "language": "en",
-      "scraped_at": "2026-01-13T15:38:02.832792"
-    },
-    {
-      "url": "https://help.noovy.com/knowledge/profiles-tasks?hsLang=en",
-      "title": "Knowledge Center",
-      "word_count": 209,
-      "language": "en",
-      "scraped_at": "2026-01-13T15:38:04.15437"
-    },
-    {
-      "url": "https://help.noovy.com/knowledge/finance-payments?hsLang=en",
-      "title": "Knowledge Center",
-      "word_count": 348,
-      "language": "en",
-      "scraped_at": "2026-01-13T15:38:05.490357"
-    },
-    {
-      "url": "https://help.noovy.com/knowledge/getting-started",
-      "title": "Knowledge Center",
-      "word_count": 192,
-      "language": "en",
-      "scraped_at": "2026-01-13T16:43:00.466615"
-    },
-    {
-      "url": "https://help.noovy.com/knowledge/finance-payments#how-tos",
-      "title": "Knowledge Center",
-      "word_count": 348,
-      "language": "en",
-      "scraped_at": "2026-01-13T16:43:01.384415"
-    },
-    {
-      "url": "https://help.noovy.com/knowledge/how-to-create-and-manage-segments",
-      "title": "How to create and manage Segments",
-      "word_count": 615,
-      "language": "en",
-      "scraped_at": "2026-01-13T16:43:02.284504"
-    },
-    {
-      "url": "https://help.noovy.com/knowledge/how-to-customise-your-registration-form",
-      "title": "How to Customise your Registration Form",
-      "word_count": 441,
-      "language": "en",
-      "scraped_at": "2026-01-13T16:43:03.120311"
-    },
-    {
-      "url": "https://help.noovy.com/knowledge/bookings-rooms#how-tos",
-      "title": "Knowledge Center",
-      "word_count": 405,
-      "language": "en",
-      "scraped_at": "2026-01-13T16:43:03.935877"
-    },
-    {
-      "url": "https://help.noovy.com/knowledge/rates-distribution#how-tos",
-      "title": "Knowledge Center",
-      "word_count": 207,
-      "language": "en",
-      "scraped_at": "2026-01-13T16:43:04.742854"
-    },
-    {
-      "url": "https://help.noovy.com/knowledge/getting-started#contacts-procedures",
-      "title": "Knowledge Center",
-      "word_count": 192,
-      "language": "en",
-      "scraped_at": "2026-01-13T16:43:05.624603"
-    },
-    {
-      "url": "https://help.noovy.com/knowledge/getting-started#basics",
-      "title": "Knowledge Center",
-      "word_count": 192,
-      "language": "en",
-      "scraped_at": "2026-01-13T16:43:06.449231"
-    },
-    {
-      "url": "https://help.noovy.com/de/knowledge/erste-schritte",
-      "title": "Knowledge Center",
-      "word_count": 134,
-      "language": "en",
-      "scraped_at": "2026-01-13T16:43:07.295848"
-    },
-    {
-      "url": "https://help.noovy.com/knowledge/bookings-rooms#pages",
-      "title": "Knowledge Center",
-      "word_count": 405,
-      "language": "en",
-      "scraped_at": "2026-01-13T16:43:08.090669"
-    },
-    {
-      "url": "https://help.noovy.com/knowledge/hardware#door-locks",
-      "title": "Knowledge Center",
-      "word_count": 125,
-      "language": "en",
-      "scraped_at": "2026-01-13T16:43:08.894881"
-    },
-    {
-      "url": "https://help.noovy.com/knowledge/finance-payments",
-      "title": "Knowledge Center",
-      "word_count": 348,
-      "language": "en",
-      "scraped_at": "2026-01-13T16:46:15.633962"
-    },
-    {
-      "url": "https://help.noovy.com/knowledge/how-to-cancel-a-proforma",
-      "title": "How to Cancel a Proforma",
-      "word_count": 293,
-      "language": "en",
-      "scraped_at": "2026-01-13T16:46:17.322402"
-    },
-    {
-      "url": "https://help.noovy.com/knowledge/how-to-capture-a-credit-card-authorisation",
-      "title": "How to Capture a Credit Card Authorisation",
-      "word_count": 610,
-      "language": "en",
-      "scraped_at": "2026-01-13T16:46:18.154492"
-    },
-    {
-      "url": "https://help.noovy.com/knowledge/how-to-authorise-a-credit-card",
-      "title": "How to Authorise a Credit Card?",
-      "word_count": 788,
-      "language": "en",
-      "scraped_at": "2026-01-13T16:46:19.013656"
-    },
-    {
-      "url": "https://help.noovy.com/knowledge/how-to-download-an-invoice",
-      "title": "How to Download an Invoice?",
-      "word_count": 249,
-      "language": "en",
-      "scraped_at": "2026-01-13T16:46:20.696465"
-    },
-    {
-      "url": "https://help.noovy.com/knowledge/the-pick-up-report-explained",
-      "title": "The Pick Up Report explained",
-      "word_count": 752,
-      "language": "en",
-      "scraped_at": "2026-01-13T16:46:21.507527"
-    },
-    {
-      "url": "https://help.noovy.com/knowledge/the-payment-report-explained",
-      "title": "The Payment Report explained",
-      "word_count": 481,
-      "language": "en",
-      "scraped_at": "2026-01-13T16:46:22.316732"
-    },
-    {
-      "url": "https://help.noovy.com/knowledge/how-to-email-an-invoice",
-      "title": "How to Email an Invoice?",
-      "word_count": 285,
-      "language": "en",
-      "scraped_at": "2026-01-13T16:46:23.164927"
-    },
-    {
-      "url": "https://help.noovy.com/knowledge/how-to-manage-a-cancellation-policy",
-      "title": "How to manage a cancellation policy",
-      "word_count": 587,
-      "language": "en",
-      "scraped_at": "2026-01-13T16:46:23.965392"
-    }
-  ],
-  "stats": {
-    "total_urls": 29,
-    "total_words": 9347,
-    "languages": {
-      "en": 29
-    },
-    "average_words_per_page": 322
+  "https://help.noovy.com/knowledge/how-to-cancel-a-proforma": {
+    "links": [],
+    "content_hash": "",
+    "scraped_at": "2026-01-13T16:46:17.322402",
+    "url": "https://help.noovy.com/knowledge/how-to-cancel-a-proforma",
+    "title": "How to Cancel a Proforma",
+    "language": "en",
+    "word_count": 293,
+    "content": ""
+  },
+  "https://help.noovy.com/knowledge/rates-distribution?hsLang=en": {
+    "links": [],
+    "content_hash": "",
+    "scraped_at": "2026-01-13T15:38:00.345058",
+    "url": "https://help.noovy.com/knowledge/rates-distribution?hsLang=en",
+    "title": "Knowledge Center",
+    "language": "en",
+    "word_count": 207,
+    "content": ""
+  },
+  "https://help.noovy.com/_hcms/mem/login?redirect_url=https%3A%2F%2Fhelp.noovy.com%2Fknowledge": {
+    "links": [],
+    "content_hash": "",
+    "scraped_at": "2026-01-13T15:38:01.575674",
+    "url": "https://help.noovy.com/_hcms/mem/login?redirect_url=https%3A%2F%2Fhelp.noovy.com%2Fknowledge",
+    "title": "Noovy",
+    "language": "en",
+    "word_count": 45,
+    "content": ""
+  },
+  "https://help.noovy.com/knowledge/the-pick-up-report-explained": {
+    "links": [],
+    "content_hash": "",
+    "scraped_at": "2026-01-13T16:46:21.507527",
+    "url": "https://help.noovy.com/knowledge/the-pick-up-report-explained",
+    "title": "The Pick Up Report explained",
+    "language": "en",
+    "word_count": 752,
+    "content": ""
+  },
+  "https://help.noovy.com/knowledge/how-to-create-and-manage-segments": {
+    "links": [],
+    "content_hash": "",
+    "scraped_at": "2026-01-13T16:43:02.284504",
+    "url": "https://help.noovy.com/knowledge/how-to-create-and-manage-segments",
+    "title": "How to create and manage Segments",
+    "language": "en",
+    "word_count": 615,
+    "content": ""
+  },
+  "https://help.noovy.com/knowledge/how-to-customise-your-registration-form": {
+    "links": [],
+    "content_hash": "",
+    "scraped_at": "2026-01-13T16:43:03.120311",
+    "url": "https://help.noovy.com/knowledge/how-to-customise-your-registration-form",
+    "title": "How to Customise your Registration Form",
+    "language": "en",
+    "word_count": 441,
+    "content": ""
+  },
+  "https://help.noovy.com/knowledge/getting-started?hsLang=en": {
+    "links": [],
+    "content_hash": "",
+    "scraped_at": "2026-01-13T15:37:56.592023",
+    "url": "https://help.noovy.com/knowledge/getting-started?hsLang=en",
+    "title": "Knowledge Center",
+    "language": "en",
+    "word_count": 192,
+    "content": ""
+  },
+  "https://help.noovy.com/knowledge/rates-distribution#how-tos": {
+    "links": [],
+    "content_hash": "",
+    "scraped_at": "2026-01-13T16:43:04.742854",
+    "url": "https://help.noovy.com/knowledge/rates-distribution#how-tos",
+    "title": "Knowledge Center",
+    "language": "en",
+    "word_count": 207,
+    "content": ""
+  },
+  "https://help.noovy.com/knowledge/hardware?hsLang=en": {
+    "links": [],
+    "content_hash": "",
+    "scraped_at": "2026-01-13T15:38:02.832792",
+    "url": "https://help.noovy.com/knowledge/hardware?hsLang=en",
+    "title": "Knowledge Center",
+    "language": "en",
+    "word_count": 125,
+    "content": ""
+  },
+  "https://help.noovy.com/knowledge/finance-payments?hsLang=en": {
+    "links": [],
+    "content_hash": "",
+    "scraped_at": "2026-01-13T15:38:05.490357",
+    "url": "https://help.noovy.com/knowledge/finance-payments?hsLang=en",
+    "title": "Knowledge Center",
+    "language": "en",
+    "word_count": 348,
+    "content": ""
+  },
+  "https://help.noovy.com/knowledge/how-to-download-an-invoice": {
+    "links": [],
+    "content_hash": "",
+    "scraped_at": "2026-01-13T16:46:20.696465",
+    "url": "https://help.noovy.com/knowledge/how-to-download-an-invoice",
+    "title": "How to Download an Invoice?",
+    "language": "en",
+    "word_count": 249,
+    "content": ""
+  },
+  "https://help.noovy.com/knowledge/getting-started": {
+    "links": [],
+    "content_hash": "",
+    "scraped_at": "2026-01-13T16:43:00.466615",
+    "url": "https://help.noovy.com/knowledge/getting-started",
+    "title": "Knowledge Center",
+    "language": "en",
+    "word_count": 192,
+    "content": ""
+  },
+  "https://help.noovy.com/de/knowledge/erste-schritte": {
+    "links": [],
+    "content_hash": "",
+    "scraped_at": "2026-01-13T16:43:07.295848",
+    "url": "https://help.noovy.com/de/knowledge/erste-schritte",
+    "title": "Knowledge Center",
+    "language": "en",
+    "word_count": 134,
+    "content": ""
+  },
+  "https://help.noovy.com/knowledge/bookings-rooms#how-tos": {
+    "links": [],
+    "content_hash": "",
+    "scraped_at": "2026-01-13T16:43:03.935877",
+    "url": "https://help.noovy.com/knowledge/bookings-rooms#how-tos",
+    "title": "Knowledge Center",
+    "language": "en",
+    "word_count": 405,
+    "content": ""
+  },
+  "https://help.noovy.com/knowledge/how-to-authorise-a-credit-card": {
+    "links": [],
+    "content_hash": "",
+    "scraped_at": "2026-01-13T16:46:19.013656",
+    "url": "https://help.noovy.com/knowledge/how-to-authorise-a-credit-card",
+    "title": "How to Authorise a Credit Card?",
+    "language": "en",
+    "word_count": 788,
+    "content": ""
+  },
+  "https://help.noovy.com/knowledge/how-to-email-an-invoice": {
+    "links": [],
+    "content_hash": "",
+    "scraped_at": "2026-01-13T16:46:23.164927",
+    "url": "https://help.noovy.com/knowledge/how-to-email-an-invoice",
+    "title": "How to Email an Invoice?",
+    "language": "en",
+    "word_count": 285,
+    "content": ""
+  },
+  "https://help.noovy.com/knowledge/finance-payments#how-tos": {
+    "links": [],
+    "content_hash": "",
+    "scraped_at": "2026-01-13T16:43:01.384415",
+    "url": "https://help.noovy.com/knowledge/finance-payments#how-tos",
+    "title": "Knowledge Center",
+    "language": "en",
+    "word_count": 348,
+    "content": ""
+  },
+  "https://help.noovy.com/knowledge/getting-started#contacts-procedures": {
+    "links": [],
+    "content_hash": "",
+    "scraped_at": "2026-01-13T16:43:05.624603",
+    "url": "https://help.noovy.com/knowledge/getting-started#contacts-procedures",
+    "title": "Knowledge Center",
+    "language": "en",
+    "word_count": 192,
+    "content": ""
+  },
+  "https://help.noovy.com/knowledge/the-payment-report-explained": {
+    "links": [],
+    "content_hash": "",
+    "scraped_at": "2026-01-13T16:46:22.316732",
+    "url": "https://help.noovy.com/knowledge/the-payment-report-explained",
+    "title": "The Payment Report explained",
+    "language": "en",
+    "word_count": 481,
+    "content": ""
+  },
+  "https://help.noovy.com/knowledge/how-to-manage-a-cancellation-policy": {
+    "links": [],
+    "content_hash": "",
+    "scraped_at": "2026-01-13T16:46:23.965392",
+    "url": "https://help.noovy.com/knowledge/how-to-manage-a-cancellation-policy",
+    "title": "How to manage a cancellation policy",
+    "language": "en",
+    "word_count": 587,
+    "content": ""
+  },
+  "https://help.noovy.com/knowledge/how-to-capture-a-credit-card-authorisation": {
+    "links": [],
+    "content_hash": "",
+    "scraped_at": "2026-01-13T16:46:18.154492",
+    "url": "https://help.noovy.com/knowledge/how-to-capture-a-credit-card-authorisation",
+    "title": "How to Capture a Credit Card Authorisation",
+    "language": "en",
+    "word_count": 610,
+    "content": ""
+  },
+  "https://help.noovy.com/knowledge/getting-started#basics": {
+    "links": [],
+    "content_hash": "",
+    "scraped_at": "2026-01-13T16:43:06.449231",
+    "url": "https://help.noovy.com/knowledge/getting-started#basics",
+    "title": "Knowledge Center",
+    "language": "en",
+    "word_count": 192,
+    "content": ""
+  },
+  "https://help.noovy.com/knowledge/bookings-rooms?hsLang=en": {
+    "links": [],
+    "content_hash": "",
+    "scraped_at": "2026-01-13T15:37:57.910481",
+    "url": "https://help.noovy.com/knowledge/bookings-rooms?hsLang=en",
+    "title": "Knowledge Center",
+    "language": "en",
+    "word_count": 405,
+    "content": ""
+  },
+  "https://help.noovy.com/knowledge/bookings-rooms#pages": {
+    "links": [],
+    "content_hash": "",
+    "scraped_at": "2026-01-13T16:43:08.090669",
+    "url": "https://help.noovy.com/knowledge/bookings-rooms#pages",
+    "title": "Knowledge Center",
+    "language": "en",
+    "word_count": 405,
+    "content": ""
+  },
+  "https://help.noovy.com/knowledge/profiles-tasks?hsLang=en": {
+    "links": [],
+    "content_hash": "",
+    "scraped_at": "2026-01-13T15:38:04.15437",
+    "url": "https://help.noovy.com/knowledge/profiles-tasks?hsLang=en",
+    "title": "Knowledge Center",
+    "language": "en",
+    "word_count": 209,
+    "content": ""
+  },
+  "https://help.noovy.com/knowledge/hardware#door-locks": {
+    "links": [],
+    "content_hash": "",
+    "scraped_at": "2026-01-13T16:43:08.894881",
+    "url": "https://help.noovy.com/knowledge/hardware#door-locks",
+    "title": "Knowledge Center",
+    "language": "en",
+    "word_count": 125,
+    "content": ""
+  },
+  "https://help.noovy.com/knowledge": {
+    "links": [],
+    "content_hash": "",
+    "scraped_at": "2026-01-13T15:37:55.222596",
+    "url": "https://help.noovy.com/knowledge",
+    "title": "Knowledge Center",
+    "language": "en",
+    "word_count": 122,
+    "content": ""
+  },
+  "https://help.noovy.com/knowledge/finance-payments": {
+    "links": [],
+    "content_hash": "",
+    "scraped_at": "2026-01-13T16:46:15.633962",
+    "url": "https://help.noovy.com/knowledge/finance-payments",
+    "title": "Knowledge Center",
+    "language": "en",
+    "word_count": 348,
+    "content": ""
+  },
+  "https://help.noovy.com/_hcms/mem/login?redirect_url=https%3A%2F%2Fhelp.noovy.com%2Fknowledge&amp;hsLang=en": {
+    "links": [],
+    "content_hash": "",
+    "scraped_at": "2026-01-13T15:37:59.092231",
+    "url": "https://help.noovy.com/_hcms/mem/login?redirect_url=https%3A%2F%2Fhelp.noovy.com%2Fknowledge&amp;hsLang=en",
+    "title": "Noovy",
+    "language": "en",
+    "word_count": 45,
+    "content": ""
   }
 }

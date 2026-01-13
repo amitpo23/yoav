@@ -1,6 +1,10 @@
 import axios from 'axios';
 
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+// In production (Vercel), use relative URL so rewrites work
+// In development, use localhost
+const API_BASE_URL = process.env.NODE_ENV === 'production' 
+  ? '' 
+  : (process.env.REACT_APP_API_URL || 'http://localhost:8000');
 
 export interface Message {
   role: 'user' | 'assistant';

@@ -13,6 +13,10 @@ class LLMService:
     
     def __init__(self):
         self.api_key = os.getenv("OPENAI_API_KEY")
+        if not self.api_key:
+            print("⚠️  WARNING: OPENAI_API_KEY not found in environment variables!")
+            print("   Please set OPENAI_API_KEY in your .env file or environment.")
+        
         self.model = os.getenv("OPENAI_MODEL", "gpt-4-turbo-preview")
         self.client = AsyncOpenAI(api_key=self.api_key) if self.api_key else None
         
@@ -57,7 +61,10 @@ class LLMService:
             התשובה מהמודל
         """
         if not self.is_available():
-            return "מצטער, שירות ה-AI אינו זמין כרגע. אנא בדוק את הגדרות ה-API."
+            error_msg = "מצטער, שירות ה-AI אינו זמין כרגע.\n"
+            error_msg += "סיבה אפשרית: מפתח API של OpenAI לא מוגדר או לא תקין.\n"
+            error_msg += "אנא בדוק שמשתנה הסביבה OPENAI_API_KEY מוגדר כראוי."
+            return error_msg
         
         # הוספת קונטקסט מ-Knowledge Base אם קיים
         system_message = self.system_prompt
@@ -80,7 +87,15 @@ class LLMService:
             return response.choices[0].message.content
             
         except Exception as e:
-            return f"שגיאה ביצירת תשובה: {str(e)}"
+            error_type = type(e).__name__
+            print(f"❌ LLM Service Error ({error_type}): {str(e)}")
+            
+            if "rate_limit" in str(e).lower():
+                return "מצטער, המערכת עמוסה כרגע. אנא נסה שוב בעוד מספר שניות."
+            elif "api_key" in str(e).lower() or "authentication" in str(e).lower():
+                return "שגיאת אימות API. אנא בדוק את הגדרות המפתח."
+            else:
+                return f"שגיאה ביצירת תשובה: {str(e)}"
     
     async def summarize_conversation(self, messages: List[Dict[str, str]]) -> str:
         """

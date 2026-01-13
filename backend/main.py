@@ -15,12 +15,17 @@ from routes import admin
 
 app = FastAPI(title="Hotel Management AI Support System")
 
-# הגדרת CORS
+# הגדרת CORS - מאובטח לפרודקשן
+allowed_origins = os.getenv(
+    "ALLOWED_ORIGINS", 
+    "http://localhost:3000,http://localhost:3001"
+).split(",")
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # בפרודקשן יש להגדיר את הדומיינים הספציפיים
+    allow_origins=allowed_origins,
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["*"],
 )
 

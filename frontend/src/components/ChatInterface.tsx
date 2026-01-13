@@ -65,15 +65,49 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ sessionId, onSessionCreat
       setMessages((prev) => [...prev, assistantMessage]);
     } catch (err) {
       console.error('Error sending message:', err);
-      setError('שגיאה בשליחת ההודעה. אנא נסה שוב.');
       
-      const errorMessage: Message = {
+      // Show waking server message
+      const wakingMessage: Message = {
         role: 'assistant',
-        content: 'מצטער, אירעה שגיאה. אנא ודא שהשרת פועל ונסה שוב.',
+        content: '🌙 מעיר את השרת... זה עלול לקחת כ-30 שניות בפעם הראשונה. אנא המתן...',
         timestamp: new Date().toISOString(),
       };
-      setMessages((prev) => [...prev, errorMessage]);
-    } finally {
+      setMessages((prev) => [...prev, wakingMessage]);
+      
+      // Wait 35 seconds
+      await new Promise(resolve => setTimeout(resolve, 35000));
+      
+      try {
+        // Retry the API call
+        const response: ChatResponse = await apiService.sendMessage({
+          message: inputMessage,
+          session_id: sessionId || undefined,
+        });
+
+        if (!sessionId) {
+          onSessionCreated(response.session_id);
+        }
+
+        const assistantMessage: Message = {
+          role: 'assistant',
+          content: response.response,
+          timestamp: new Date().toISOString(),
+        };
+
+        // Replace waking message with actual response
+        setMessages((prev) => [...prev.slice(0, -1), assistantMessage]);
+      } catch (retryErr) {
+        console.error('Error on retry:', retryErr);
+        
+        // Replace waking message with error
+        const errorMessage: Message = {
+          role: 'assistant',
+          content: 'מצטער, אירעה שגיאה בתקשורת עם השרת. אנא נסה שוב מאוחר יותר.',
+          timestamp: new Date().toISOString(),
+        };
+        setMessages((prev) => [...prev.slice(0, -1), errorMessage]);
+      }
+      
       setIsLoading(false);
     }
   };

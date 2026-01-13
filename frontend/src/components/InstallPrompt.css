@@ -1,0 +1,123 @@
+.install-prompt {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  max-width: 400px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  z-index: 10000;
+  animation: slideUp 0.4s ease;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.install-content {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.install-icon {
+  font-size: 40px;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 12px;
+}
+
+.install-text h3 {
+  margin: 0 0 4px;
+  font-size: 18px;
+  color: #1f2937;
+}
+
+.install-text p {
+  margin: 0;
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.install-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.install-btn {
+  flex: 1;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.install-btn.primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.install-btn.primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.install-btn.secondary {
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
+.install-btn.secondary:hover {
+  background: #e5e7eb;
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+  .install-prompt {
+    background: #1f2937;
+  }
+  
+  .install-text h3 {
+    color: #f3f4f6;
+  }
+  
+  .install-text p {
+    color: #9ca3af;
+  }
+  
+  .install-btn.secondary {
+    background: #374151;
+    color: #9ca3af;
+  }
+  
+  .install-btn.secondary:hover {
+    background: #4b5563;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .install-prompt {
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+  }
+}

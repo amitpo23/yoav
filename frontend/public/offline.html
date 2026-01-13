@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#667eea" />
+  <title>אופליין - Hotel AI Support</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .offline-container {
+      background: white;
+      border-radius: 20px;
+      padding: 40px;
+      text-align: center;
+      max-width: 400px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+    .offline-icon {
+      font-size: 64px;
+      margin-bottom: 20px;
+    }
+    h1 {
+      color: #1f2937;
+      font-size: 24px;
+      margin-bottom: 12px;
+    }
+    p {
+      color: #6b7280;
+      font-size: 16px;
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+    .retry-btn {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      padding: 14px 32px;
+      font-size: 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .retry-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+    }
+    .tips {
+      margin-top: 32px;
+      padding-top: 24px;
+      border-top: 1px solid #e5e7eb;
+    }
+    .tips h3 {
+      color: #374151;
+      font-size: 14px;
+      margin-bottom: 12px;
+    }
+    .tips ul {
+      text-align: right;
+      color: #6b7280;
+      font-size: 13px;
+      list-style: none;
+    }
+    .tips li {
+      padding: 6px 0;
+    }
+    .tips li::before {
+      content: '•';
+      color: #667eea;
+      margin-left: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="offline-container">
+    <div class="offline-icon">📡</div>
+    <h1>אין חיבור לאינטרנט</h1>
+    <p>נראה שאתה במצב אופליין. בדוק את החיבור שלך ונסה שוב.</p>
+    <button class="retry-btn" onclick="window.location.reload()">
+      נסה שוב
+    </button>
+    
+    <div class="tips">
+      <h3>בינתיים, אפשר לנסות:</h3>
+      <ul>
+        <li>לבדוק את חיבור ה-WiFi</li>
+        <li>לכבות ולהדליק את הנתונים הסלולריים</li>
+        <li>לבדוק שמצב טיסה לא מופעל</li>
+      </ul>
+    </div>
+  </div>
+  
+  <script>
+    // Auto-retry when back online
+    window.addEventListener('online', () => {
+      window.location.reload();
+    });
+  </script>
+</body>
+</html>

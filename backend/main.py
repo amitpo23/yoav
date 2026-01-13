@@ -169,6 +169,174 @@ async def get_session_memory(session_id: str):
         raise HTTPException(status_code=500, detail=str(e))
 
 
+# ===========================================
+# File Upload Endpoints
+# ===========================================
+from fastapi import File, UploadFile
+from services.file_handler import file_handler
+
+@app.post("/api/knowledge-base/upload")
+async def upload_file(file: UploadFile = File(...), category: str = "general"):
+    """
+    העלאת קובץ למאגר הידע
+    """
+    try:
+        result = await file_handler.process_file(file, category)
+        
+        if result['success']:
+            # Add to knowledge base
+            await kb_service.add_item(
+                title=result['filename'],
+                content=result['extracted_text'][:10000],  # Limit content size
+                category=category,
+                tags=['uploaded', result['metadata']['extension']]
+            )
+        
+        return result
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/knowledge-base/files")
+async def list_files(category: str = None):
+    """
+    קבלת רשימת קבצים שהועלו
+    """
+    return {"files": file_handler.list_files(category)}
+
+
+@app.delete("/api/knowledge-base/files/{file_id}")
+async def delete_file(file_id: str):
+    """
+    מחיקת קובץ
+    """
+    if file_handler.delete_file(file_id):
+        return {"success": True, "message": "File deleted"}
+    raise HTTPException(status_code=404, detail="File not found")
+
+
+# ===========================================
+# Analytics Endpoints
+# ===========================================
+from services.analytics import analytics_service
+
+@app.get("/api/admin/analytics")
+async def get_analytics(period: str = "7d"):
+    """
+    קבלת דוח אנליטיקה מלא
+    """
+    return analytics_service.get_full_report(period)
+
+
+@app.get("/api/admin/analytics/overview")
+async def get_analytics_overview(period: str = "7d"):
+    """
+    קבלת סקירה כללית
+    """
+    return analytics_service.get_overview(period)
+
+
+@app.get("/api/admin/analytics/performance")
+async def get_performance_metrics():
+    """
+    קבלת מדדי ביצועים
+    """
+    return analytics_service.get_performance_metrics()
+
+
+@app.post("/api/feedback")
+async def submit_feedback(session_id: str, rating: int, feedback: str = None):
+    """
+    שליחת משוב מהמשתמש
+    """
+    analytics_service.track_feedback(session_id, rating, feedback)
+    return {"success": True, "message": "תודה על המשוב!"}
+
+
+# ===========================================
+# WebSocket Endpoints
+# ===========================================
+from fastapi import WebSocket, WebSocketDisconnect
+from services.websocket_manager import connection_manager, notification_service
+
+@app.websocket("/ws")
+async def websocket_endpoint(websocket: WebSocket, session_id: str = None):
+    """
+    WebSocket endpoint for real-time updates
+    """
+    await connection_manager.connect(websocket, session_id)
+    try:
+        while True:
+            data = await websocket.receive_json()
+            
+            # Handle different message types
+            if data.get('type') == 'ping':
+                await websocket.send_json({'type': 'pong', 'timestamp': data.get('timestamp')})
+            elif data.get('type') == 'typing':
+                if session_id:
+                    await connection_manager.notify_typing(session_id, data.get('is_typing', False))
+    except WebSocketDisconnect:
+        connection_manager.disconnect(websocket, session_id)
+    except Exception as e:
+        print(f"WebSocket error: {e}")
+        connection_manager.disconnect(websocket, session_id)
+
+
+@app.websocket("/ws/admin")
+async def admin_websocket_endpoint(websocket: WebSocket):
+    """
+    WebSocket endpoint for admin notifications
+    """
+    await connection_manager.connect_admin(websocket)
+    try:
+        while True:
+            await websocket.receive_text()  # Keep connection alive
+    except WebSocketDisconnect:
+        connection_manager.disconnect(websocket)
+
+
+@app.get("/api/ws/stats")
+async def get_websocket_stats():
+    """
+    קבלת סטטיסטיקות WebSocket
+    """
+    return connection_manager.get_connection_stats()
+
+
+# ===========================================
+# Rate Limiting Middleware
+# ===========================================
+from fastapi import Request
+from services.security import rate_limiter, security_service
+
+@app.middleware("http")
+async def rate_limit_middleware(request: Request, call_next):
+    """
+    Rate limiting middleware
+    """
+    # Get client IP
+    client_ip = request.client.host if request.client else "unknown"
+    
+    # Check rate limit (skip for static files and health checks)
+    if not request.url.path.startswith("/static") and request.url.path != "/health":
+        result = rate_limiter.is_allowed(client_ip)
+        
+        if not result['allowed']:
+            from fastapi.responses import JSONResponse
+            return JSONResponse(
+                status_code=429,
+                content={
+                    "error": "Too many requests",
+                    "message": "יותר מדי בקשות. נסה שוב מאוחר יותר.",
+                    "retry_after": result.get('retry_after', 60)
+                },
+                headers={"Retry-After": str(result.get('retry_after', 60))}
+            )
+    
+    response = await call_next(request)
+    return response
+
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)

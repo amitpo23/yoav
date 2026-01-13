@@ -5,6 +5,7 @@ import MessageBubble from './MessageBubble';
 import LoadingIndicator from './LoadingIndicator';
 import SkillsPanel from './SkillsPanel';
 import ThinkingProcess from './ThinkingProcess';
+import VoiceInput from './VoiceInput';
 
 interface EnhancedChatInterfaceProps {
   sessionId: string | null;
@@ -243,6 +244,12 @@ const EnhancedChatInterface: React.FC<EnhancedChatInterfaceProps> = ({ sessionId
 
       <div className="input-area-enhanced">
         <div className="input-container-enhanced">
+          <VoiceInput
+            onTranscript={(text) => {
+              setInputMessage(prev => prev + ' ' + text);
+            }}
+            disabled={isLoading}
+          />
           <textarea
             ref={textareaRef}
             className="message-input-enhanced"
@@ -267,7 +274,7 @@ const EnhancedChatInterface: React.FC<EnhancedChatInterfaceProps> = ({ sessionId
         </div>
         <div className="input-footer">
           <span className="input-hint">
-            העוזר החכם משתמש ב-AI מתקדם ומאגר ידע מקצועי
+            🎤 לחץ על כפתור המיקרופון לקלט קולי | העוזר משתמש ב-AI מתקדם
           </span>
         </div>
       </div>

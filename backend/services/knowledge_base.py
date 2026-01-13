@@ -1,8 +1,7 @@
 import os
-import chromadb
-from chromadb.config import Settings
+import json
+import re
 from typing import List, Dict, Optional
-from sentence_transformers import SentenceTransformer
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -10,32 +9,42 @@ load_dotenv()
 
 class KnowledgeBaseService:
     """
-    שירות לניהול מאגר הידע (Knowledge Base) באמצעות ChromaDB
+    שירות לניהול מאגר הידע (Knowledge Base) - גרסה פשוטה בזיכרון
     """
     
     def __init__(self):
-        self.db_path = os.getenv("CHROMA_DB_PATH", "./chroma_db")
-        self.embedding_model_name = os.getenv("EMBEDDING_MODEL", "all-MiniLM-L6-v2")
+        self.db_path = os.getenv("KNOWLEDGE_DB_PATH", "./data/knowledge_db.json")
+        self.items: List[Dict] = []
         
-        # אתחול מודל ה-Embeddings
-        self.embedding_model = SentenceTransformer(self.embedding_model_name)
+        # טעינת נתונים קיימים או אתחול
+        self._load_from_file()
         
-        # אתחול ChromaDB
-        self.client = chromadb.PersistentClient(path=self.db_path)
-        
-        # יצירת או טעינת הקולקציה
-        self.collection = self.client.get_or_create_collection(
-            name="hotel_management_kb",
-            metadata={"description": "Knowledge base for hotel management systems"}
-        )
-        
-        # אתחול עם נתונים בסיסיים אם הקולקציה ריקה
-        if self.collection.count() == 0:
+        # אתחול עם נתונים בסיסיים אם ריק
+        if len(self.items) == 0:
             self._initialize_base_knowledge()
+            self._save_to_file()
+    
+    def _load_from_file(self):
+        """טעינת נתונים מקובץ"""
+        try:
+            if os.path.exists(self.db_path):
+                with open(self.db_path, 'r', encoding='utf-8') as f:
+                    self.items = json.load(f)
+        except Exception:
+            self.items = []
+    
+    def _save_to_file(self):
+        """שמירת נתונים לקובץ"""
+        try:
+            os.makedirs(os.path.dirname(self.db_path), exist_ok=True)
+            with open(self.db_path, 'w', encoding='utf-8') as f:
+                json.dump(self.items, f, ensure_ascii=False, indent=2)
+        except Exception:
+            pass
     
     def is_available(self) -> bool:
         """בדיקה אם השירות זמין"""
-        return self.collection is not None
+        return True
     
     def _initialize_base_knowledge(self):
         """אתחול מאגר הידע עם מידע בסיסי"""
@@ -73,26 +82,28 @@ class KnowledgeBaseService:
         ]
         
         for item in base_knowledge:
-            self._add_item_sync(
-                title=item["title"],
-                content=item["content"],
-                category=item["category"],
-                tags=item["tags"]
-            )
+            self.items.append({
+                "id": f"{item['category']}_{len(self.items)}",
+                "title": item["title"],
+                "content": item["content"],
+                "category": item["category"],
+                "tags": item["tags"]
+            })
     
-    def _add_item_sync(self, title: str, content: str, category: str, tags: List[str]):
-        """הוספת פריט באופן סינכרוני (לאתחול)"""
-        doc_id = f"{category}_{len(self.collection.get()['ids'])}"
+    def _calculate_relevance(self, query: str, item: Dict) -> float:
+        """חישוב רלוונטיות פשוט על בסיס מילים"""
+        query_lower = query.lower()
+        query_words = set(re.findall(r'\w+', query_lower))
         
-        self.collection.add(
-            documents=[content],
-            metadatas=[{
-                "title": title,
-                "category": category,
-                "tags": ",".join(tags)
-            }],
-            ids=[doc_id]
-        )
+        text = f"{item['title']} {item['content']} {' '.join(item.get('tags', []))}".lower()
+        text_words = set(re.findall(r'\w+', text))
+        
+        # חישוב overlap
+        common = query_words & text_words
+        if not query_words:
+            return 0.0
+        
+        return len(common) / len(query_words)
     
     async def add_item(
         self,
@@ -107,18 +118,17 @@ class KnowledgeBaseService:
         if tags is None:
             tags = []
         
-        doc_id = f"{category}_{self.collection.count()}"
+        doc_id = f"{category}_{len(self.items)}"
         
-        self.collection.add(
-            documents=[content],
-            metadatas=[{
-                "title": title,
-                "category": category,
-                "tags": ",".join(tags)
-            }],
-            ids=[doc_id]
-        )
+        self.items.append({
+            "id": doc_id,
+            "title": title,
+            "content": content,
+            "category": category,
+            "tags": tags
+        })
         
+        self._save_to_file()
         return doc_id
     
     async def search(self, query: str, limit: int = 5) -> List[Dict]:
@@ -132,19 +142,28 @@ class KnowledgeBaseService:
         Returns:
             רשימת תוצאות רלוונטיות
         """
-        results = self.collection.query(
-            query_texts=[query],
-            n_results=limit
-        )
+        # חישוב רלוונטיות לכל פריט
+        scored_items = []
+        for item in self.items:
+            score = self._calculate_relevance(query, item)
+            if score > 0:
+                scored_items.append((score, item))
         
+        # מיון לפי רלוונטיות
+        scored_items.sort(key=lambda x: x[0], reverse=True)
+        
+        # החזרת התוצאות
         formatted_results = []
-        if results['documents'] and results['documents'][0]:
-            for i, doc in enumerate(results['documents'][0]):
-                formatted_results.append({
-                    "content": doc,
-                    "metadata": results['metadatas'][0][i] if results['metadatas'] else {},
-                    "distance": results['distances'][0][i] if results['distances'] else 0
-                })
+        for score, item in scored_items[:limit]:
+            formatted_results.append({
+                "content": item["content"],
+                "metadata": {
+                    "title": item["title"],
+                    "category": item["category"],
+                    "tags": ",".join(item.get("tags", []))
+                },
+                "distance": 1.0 - score  # המרה לדמיון (0 = זהה)
+            })
         
         return formatted_results
     

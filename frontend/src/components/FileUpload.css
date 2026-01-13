@@ -1,0 +1,210 @@
+.file-upload-container {
+  width: 100%;
+  margin: 16px 0;
+}
+
+.file-upload-zone {
+  border: 2px dashed #d1d5db;
+  border-radius: 12px;
+  padding: 32px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: #fafafa;
+}
+
+.file-upload-zone:hover:not(.disabled):not(.uploading) {
+  border-color: #667eea;
+  background: #f0f0ff;
+}
+
+.file-upload-zone.dragging {
+  border-color: #667eea;
+  background: #ede9fe;
+  transform: scale(1.02);
+}
+
+.file-upload-zone.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.file-upload-zone.uploading {
+  cursor: wait;
+}
+
+.upload-icon {
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 16px;
+  color: #9ca3af;
+}
+
+.file-upload-zone:hover:not(.disabled) .upload-icon {
+  color: #667eea;
+}
+
+.upload-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.upload-text {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.upload-title {
+  font-size: 16px;
+  font-weight: 500;
+  color: #374151;
+}
+
+.upload-subtitle {
+  font-size: 13px;
+  color: #9ca3af;
+}
+
+/* Progress */
+.upload-progress {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.progress-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #e5e7eb;
+  border-top-color: #667eea;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.progress-bar {
+  width: 100%;
+  max-width: 200px;
+  height: 8px;
+  background: #e5e7eb;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #667eea, #764ba2);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.progress-text {
+  font-size: 14px;
+  font-weight: 500;
+  color: #667eea;
+}
+
+/* Messages */
+.upload-message {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-top: 12px;
+  font-size: 14px;
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.upload-message.error {
+  background: #fee2e2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+}
+
+.upload-message.success {
+  background: #dcfce7;
+  color: #16a34a;
+  border: 1px solid #bbf7d0;
+}
+
+.message-icon {
+  font-size: 16px;
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+  .file-upload-zone {
+    background: #1f2937;
+    border-color: #4b5563;
+  }
+  
+  .file-upload-zone:hover:not(.disabled):not(.uploading) {
+    background: #2d3748;
+    border-color: #667eea;
+  }
+  
+  .file-upload-zone.dragging {
+    background: #2d3748;
+  }
+  
+  .upload-title {
+    color: #f3f4f6;
+  }
+  
+  .upload-subtitle {
+    color: #9ca3af;
+  }
+  
+  .progress-bar {
+    background: #4b5563;
+  }
+  
+  .upload-message.error {
+    background: #7f1d1d;
+    color: #fecaca;
+    border-color: #991b1b;
+  }
+  
+  .upload-message.success {
+    background: #14532d;
+    color: #bbf7d0;
+    border-color: #166534;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .file-upload-zone {
+    padding: 24px;
+  }
+  
+  .upload-icon {
+    width: 36px;
+    height: 36px;
+  }
+  
+  .upload-title {
+    font-size: 14px;
+  }
+  
+  .upload-subtitle {
+    font-size: 12px;
+  }
+}

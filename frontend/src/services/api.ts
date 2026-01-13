@@ -95,12 +95,63 @@ class ApiService {
     }
   }
 
-  async def healthCheck(): Promise<any> {
+  async healthCheck(): Promise<any> {
     try {
       const response = await this.axiosInstance.get('/health');
       return response.data;
     } catch (error) {
       console.error('Error checking health:', error);
+      throw error;
+    }
+  }
+
+  // File upload support
+  async uploadFile(file: File, category: string = 'general'): Promise<any> {
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('category', category);
+      
+      const response = await this.axiosInstance.post('/api/knowledge-base/upload', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Error uploading file:', error);
+      throw error;
+    }
+  }
+
+  // Analytics endpoints
+  async getAnalytics(period: string = '7d'): Promise<any> {
+    try {
+      const response = await this.axiosInstance.get('/api/admin/analytics', {
+        params: { period }
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Error getting analytics:', error);
+      throw error;
+    }
+  }
+
+  // Skills endpoints
+  async getSkills(): Promise<any> {
+    try {
+      const response = await this.axiosInstance.get('/api/skills');
+      return response.data;
+    } catch (error) {
+      console.error('Error getting skills:', error);
+      throw error;
+    }
+  }
+
+  async toggleSkill(skillName: string): Promise<any> {
+    try {
+      const response = await this.axiosInstance.post(`/api/admin/skills/${skillName}/toggle`);
+      return response.data;
+    } catch (error) {
+      console.error('Error toggling skill:', error);
       throw error;
     }
   }

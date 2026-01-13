@@ -166,13 +166,39 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
 
           {activeTab === 'sessions' && (
             <div className="sessions-view">
-              <p>מידע על סשנים פעילים...</p>
+              <div className="sessions-header">
+                <h3>סשנים פעילים</h3>
+                <button className="action-btn small" onClick={handleCleanup}>
+                  🧹 נקה ישנים
+                </button>
+              </div>
+              <div className="sessions-stats">
+                <div className="session-stat">
+                  <span className="stat-number">{stats?.active_sessions || 0}</span>
+                  <span className="stat-label">פעילים</span>
+                </div>
+                <div className="session-stat">
+                  <span className="stat-number">{stats?.total_sessions || 0}</span>
+                  <span className="stat-label">סה"כ</span>
+                </div>
+              </div>
             </div>
           )}
 
           {activeTab === 'knowledge' && (
             <div className="knowledge-view">
-              <p>ניהול מאגר הידע...</p>
+              <div className="knowledge-stats">
+                <div className="stat-box">
+                  <span className="stat-icon">📚</span>
+                  <span className="stat-value">{stats?.total_knowledge_items || 0}</span>
+                  <span className="stat-label">פריטי ידע</span>
+                </div>
+              </div>
+              <div className="knowledge-actions">
+                <button className="action-btn" onClick={() => window.open('/api/docs', '_blank')}>
+                  📖 API Docs
+                </button>
+              </div>
             </div>
           )}
         </div>

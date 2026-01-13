@@ -87,7 +87,7 @@ async def get_system_stats():
     total_messages = sum(len(chat_manager.sessions.get(sid, [])) for sid in active_sessions)
     
     # Get knowledge base stats
-    kb_count = chat_manager.kb_service.collection.count() if chat_manager.kb_service.is_available() else 0
+    kb_count = len(chat_manager.kb_service.items) if chat_manager.kb_service.is_available() else 0
     
     # Get skills count
     skills = chat_manager.get_available_skills()

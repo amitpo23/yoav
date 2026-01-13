@@ -115,6 +115,9 @@ class ChatManager:
             "timestamp": datetime.now().isoformat()
         })
         
+        # חיפוש מקורות (לפני הלוגים כדי שיהיה זמין)
+        sources = await self.kb_service.search(message, limit=3)
+        
         # Calculate response time
         response_time_ms = int((time.time() - start_time) * 1000)
         
@@ -137,9 +140,6 @@ class ChatManager:
                 'timestamp': datetime.now().isoformat()
             }
         )
-        
-        # חיפוש מקורות
-        sources = await self.kb_service.search(message, limit=3)
         
         return {
             "response": response_content,

@@ -4,11 +4,13 @@ import EnhancedChatInterface from './components/EnhancedChatInterface';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 import InstallPrompt from './components/InstallPrompt';
+import AdminPanel from './components/AdminPanel';
 import { wsService } from './services/websocket';
 
 function App() {
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [showSidebar, setShowSidebar] = useState(false);
+  const [showAdmin, setShowAdmin] = useState(false);
   const [isOnline, setIsOnline] = useState(navigator.onLine);
 
   useEffect(() => {
@@ -42,7 +44,7 @@ function App() {
 
   return (
     <div className="App">
-      <Header onMenuClick={() => setShowSidebar(!showSidebar)} />
+      <Header onMenuClick={() => setShowSidebar(!showSidebar)} onAdminClick={() => setShowAdmin(true)} />
       
       {!isOnline && (
         <div className="offline-banner">
@@ -68,6 +70,8 @@ function App() {
       </div>
       
       <InstallPrompt />
+      
+      {showAdmin && <AdminPanel onClose={() => setShowAdmin(false)} />}
     </div>
   );
 }
